@@ -1,5 +1,7 @@
 //axio的封装处理
 import axios from "axios";
+import { getToken, removeToken } from "./token"
+import router from "@/router"
 //根域名配置
 //超时时间
 //请求拦截器/响应拦截器

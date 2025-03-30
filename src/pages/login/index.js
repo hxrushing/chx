@@ -1,10 +1,21 @@
 import './index.scss'
 import { Card, Form, Input, Button, message } from 'antd'
 import logo from '@/assets/logo.png'
+import { useDispatch } from 'react-redux'
+import { fetchLogin } from '@/store/modules/user'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-    const onFinish = (values) => {
-        console.log(values)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const onFinish = async (values) => {
+        try {
+            await dispatch(fetchLogin(values))
+            message.success('登录成功')
+            navigate('/')
+        } catch (error) {
+            message.error('登录失败，请检查手机号和验证码')
+        }
     }
     return (
         <div className="login">
