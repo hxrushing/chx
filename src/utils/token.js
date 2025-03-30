@@ -3,7 +3,7 @@
 const TOKENKEY = 'token_key'
 
 function setToken (token) {
-  return localStorage.setItem(TOKENKEY, token)
+  localStorage.setItem(TOKENKEY, token)
 }
 
 function getToken () {
@@ -11,7 +11,7 @@ function getToken () {
 }
 
 function removeToken () {
-  return localStorage.removeItem(TOKENKEY)
+  localStorage.removeItem(TOKENKEY)
 }
 
 export {
