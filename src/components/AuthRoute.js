@@ -4,7 +4,7 @@ import { getToken } from "@/utils";
 import { Navigate } from "react-router-dom";
 
 export function AuthRoute({children}){
-    const token = getToken
+    const token = getToken()  // 添加括号调用函数
     if(token)
     {
         return <>{children}</>
