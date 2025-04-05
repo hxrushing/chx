@@ -78,6 +78,23 @@ import {
                 {channelList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
               </Select>
             </Form.Item>
+            <Form.Item label="封面">
+            <Form.Item name="type">
+              <Radio.Group>
+                <Radio value={1}>单图</Radio>
+                <Radio value={3}>三图</Radio>
+                <Radio value={0}>无图</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Upload
+              listType="picture-card"
+              showUploadList
+            >
+              <div style={{ marginTop: 8 }}>
+                <PlusOutlined />
+              </div>
+            </Upload>
+          </Form.Item>
             <Form.Item
               label="内容"
               name="content"
