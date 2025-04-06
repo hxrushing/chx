@@ -9,7 +9,11 @@ import Publish from "@/pages/Publish";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <AuthRoute><Layout /></AuthRoute>,
+        element: (
+            <AuthRoute>
+                <Layout />
+            </AuthRoute>
+        ),
         children:[
             {
                 path: '',

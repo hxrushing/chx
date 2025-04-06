@@ -15,21 +15,14 @@ import {
   import './index.scss'
   import ReactQuill from 'react-quill'
   import 'react-quill/dist/quill.snow.css'
-  import { createArticleAPI, getChannelAPI } from '@/apis/article'
-  import { useEffect, useState } from'react'
+  import { createArticleAPI } from '@/apis/article'
+  import { useState } from'react'
+  import { useChannel } from '@/hooks/useChannel'
   const { Option } = Select
   
   const Publish = () => {
     //获取频道列表
-    const [channelList, setChannelList] = useState([])
-    useEffect(() => {
-      //封装函数，在函数体内调用接口
-      const getChannelListAPI = async () => {
-        const res = await getChannelAPI()
-        setChannelList(res.data.channels)
-      }
-      getChannelListAPI()
-    }, [])
+    const { channelList } = useChannel()
     //表单提交
     const onFinish = (formValue) => {
       //校验封面类型
