@@ -89,7 +89,7 @@ const Article = () => {
   ]
 
   //筛选功能
-  const [resData, setResData] = useState({
+  const [reqData, setReqData] = useState({
     status: '',
     channel_id: '',
     begin_pubdate: '',
@@ -103,25 +103,33 @@ const Article = () => {
   const[count,setCount] = useState(0)
   useEffect(() => {
     async function getList(){
-      const res = await getArticleListAPI(resData)
+      const res = await getArticleListAPI(reqData)
       setList(res.data.results)
       setCount(res.data.total_count)
     }
     getList()
-  }, [resData])
+  }, [reqData])
 
   //获取筛选数据
   const onFinish = (formValues) => {
     console.log('Form values:', formValues)
     //把表单收集到的数据放到参数中
-    setResData({ 
-      ...resData,
+    setReqData({ 
+      ...reqData,
       channel_id: formValues.channel_id,
       status: formValues.status,
       begin_pubdate: formValues.date[0].format('YYYY-MM-DD'),
       end_pubdate: formValues.date[1].format('YYYY-MM-DD')
     })
     //reqData变化，触发useEffect
+  }
+
+  //分页
+  const onPageChange = (page) => {
+    setReqData({
+      ...reqData,
+      page: page
+    })
   }
 
   return (
@@ -168,7 +176,11 @@ const Article = () => {
       </Card>
       {/* 表格区域 */}
       <Card title={`根据筛选条件共查询到 ${count} 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={list} />
+        <Table rowKey="id" columns={columns} dataSource={list} pagination={{
+          total: count,
+          pageSize: reqData.per_page,
+          onChange: onPageChange,
+        }}/>
       </Card>
     </div>
   )
