@@ -87,17 +87,43 @@ const Article = () => {
       title: 'wkwebview离线化加载h5资源解决方案'
     }
   ]
+
+  //筛选功能
+  const [resData, setResData] = useState({
+    status: '',
+    channel_id: '',
+    begin_pubdate: '',
+    end_pubdate: '',
+    page: 1, //页码
+    per_page: 4
+  })
+
   //获取文章列表
   const[list,setList] = useState([])
   const[count,setCount] = useState(0)
   useEffect(() => {
     async function getList(){
-      const res = await getArticleListAPI()
+      const res = await getArticleListAPI(resData)
       setList(res.data.results)
       setCount(res.data.total_count)
     }
     getList()
-  }, [])
+  }, [resData])
+
+  //获取筛选数据
+  const onFinish = (formValues) => {
+    console.log('Form values:', formValues)
+    //把表单收集到的数据放到参数中
+    setResData({ 
+      ...resData,
+      channel_id: formValues.channel_id,
+      status: formValues.status,
+      begin_pubdate: formValues.date[0].format('YYYY-MM-DD'),
+      end_pubdate: formValues.date[1].format('YYYY-MM-DD')
+    })
+    //reqData变化，触发useEffect
+  }
+
   return (
     <div>
       <Card
@@ -109,7 +135,7 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: '' }}>
+        <Form initialValues={{ status: '' }} onFinish={onFinish}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
               <Radio value={''}>全部</Radio>
