@@ -15,7 +15,7 @@ import {
   import './index.scss'
   import ReactQuill from 'react-quill'
   import 'react-quill/dist/quill.snow.css'
-  import { createArticleAPI, getArticleById } from '@/apis/article'
+  import { createArticleAPI, getArticleById, updateArticleAPI } from '@/apis/article'
   import { useEffect, useState } from'react'
   import { useChannel } from '@/hooks/useChannel'
   const { Option } = Select
@@ -35,13 +35,24 @@ import {
         title,
         content,
         cover: {
-          images: imageList.map(item => item.response.data.url),
-          type: imageType
+          type: imageType,
+          images: imageList.map(item => {
+            if(item.response){
+              return item.response.data.url
+            }else{ 
+              return item.url
+            }
+          }),
         },
         channel_id
       }
       //调用接口提交
-      createArticleAPI(reqData)
+      if(articleId){
+        //编辑
+        updateArticleAPI({...reqData, id: articleId})
+      }else{
+        createArticleAPI(reqData)
+      }
     }
     //上传回调
     const [imageList, setImageList] = useState([])
@@ -76,7 +87,9 @@ import {
           return { url,}
         }))
       } 
-      getArticleDetail()  
+      if(articleId){
+        getArticleDetail()  
+      }
       //调用实例方法 完成回填
     }, [articleId, form])
 
@@ -86,7 +99,7 @@ import {
           title={
             <Breadcrumb items={[
               { title: <Link to={'/'}>首页</Link> },
-              { title: '发布文章' },
+              { title: `${articleId ? '编辑' : '发布'}文章` },
             ]}
             />
           }
