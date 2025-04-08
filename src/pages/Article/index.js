@@ -7,16 +7,18 @@ import { Table, Tag, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from '@/assets/error.png'
 import { useChannel } from '@/hooks/useChannel'
-import { useEffect, useState } from 'react' 
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { delArticleAPI, getArticleListAPI } from '@/apis/article'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
 
 const Article = () => {
+  const navigate = useNavigate()
   const { channelList } = useChannel()
   const status = {
-    1: <Tag color="warning">审核中</Tag>,
+    1: <Tag color="warning">待审核</Tag>,
     2: <Tag color="success">审核通过</Tag>
   }
     // 准备列数据
@@ -60,7 +62,7 @@ const Article = () => {
       render: data => {
         return (
           <Space size="middle">
-            <Button type="primary" shape="circle" icon={<EditOutlined />} />
+            <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => navigate(`/publish?id=${data.id}`)}/>
             <Popconfirm
               title="删除文章"
               description="确认删除该文章吗？"
@@ -78,21 +80,6 @@ const Article = () => {
           </Space>
         )
       }
-    }
-  ]
-  // 准备表格body数据
-  const data = [
-    {
-      id: '8218',
-      comment_count: 0,
-      cover: {
-        images: [],
-      },
-      like_count: 0,
-      pubdate: '2019-03-11 09:00:00',
-      read_count: 2,
-      status: 2,
-      title: 'wkwebview离线化加载h5资源解决方案'
     }
   ]
 
@@ -164,6 +151,7 @@ const Article = () => {
             <Radio.Group>
               <Radio value={''}>全部</Radio>
               <Radio value={0}>草稿</Radio>
+              <Radio value={1}>待审核</Radio>
               <Radio value={2}>审核通过</Radio>
             </Radio.Group>
           </Form.Item>
