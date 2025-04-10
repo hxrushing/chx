@@ -51,3 +51,11 @@ export function updateArticleAPI (data) {
       data
     })
 }
+
+// 新增评论统计接口
+export function getCommentStatsAPI() {
+  return request({
+    url: '/mp/comments/stats',
+    method: 'GET'
+  })
+}
